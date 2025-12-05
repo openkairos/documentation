@@ -6,11 +6,11 @@ This repository contains all documentation for the Kairos project.
 
 All documentation is organized in the `/docs` directory with the following structure:
 
-- **[/docs/requirements](docs/requirements/)** - Requirements documentation
-- **[/docs/design](docs/design/)** - Design documentation
-- **[/docs/technical](docs/technical/)** - Technical documentation
-- **[/docs/quality-assurance](docs/quality-assurance/)** - Quality assurance documentation
-- **[/docs/user](docs/user/)** - User documentation
+- **[/docs/requirements](docs/requirements/README.md)** - Requirements documentation
+- **[/docs/design](docs/design/README.md)** - Design documentation
+- **[/docs/technical](docs/technical/README.md)** - Technical documentation
+- **[/docs/quality-assurance](docs/quality-assurance/README.md)** - Quality assurance documentation
+- **[/docs/user](docs/user/README.md)** - User documentation
 
 ## Contributing
 
