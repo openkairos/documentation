@@ -54,8 +54,9 @@ look like:
 ```
 chore(tests): fix user registration flaky test
 
-- Removed the randomness from the test to ensure consistent results
-- Closes #123
+- removed the randomness from the test to ensure consistent results
+
+closes #123
 ```
 
 ## Scopes
