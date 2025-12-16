@@ -77,3 +77,13 @@ ones or this is a sign that the unit under test doesn't have a single entry poin
 Don't write comments in your test cases, even `Arrange`, `Act` and `Assert`. They are added here just for clarity, but
 in real test cases they should be omitted, and each section should be clearly distinguishable by itself. This could be
 achieved by adding empty lines between sections, a single empty line after each section is usually enough.
+
+```typescript
+it('should return null when the user does not exist', async () => {
+  const nonExistentUserId = 'non-existent-id';
+
+  const profile = await getUserProfile(nonExistentUserId);
+
+  expect(profile).toBeNull();
+});
+```
