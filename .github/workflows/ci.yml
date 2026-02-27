@@ -29,8 +29,4 @@ jobs:
         run: npm run lint
 
       - name: Build documentation
-        env:
-          DOCS_BASE_URL: /
-          DOCS_VERSION: next
-          DOCS_VERSIONS: next
         run: npm run build
