@@ -1,6 +1,16 @@
 const versionSlug = process.env.DOCS_VERSION ?? 'next';
 const siteUrl = process.env.SITE_URL ?? 'https://example.com';
 const baseUrl = process.env.DOCS_BASE_URL ?? '/';
+const docsSiteBase = process.env.DOCS_SITE_BASE ?? '/';
+
+const normalizeBasePath = (value) => {
+  const trimmed = value.trim();
+  const withLeadingSlash = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  const withTrailingSlash = withLeadingSlash.endsWith('/')
+    ? withLeadingSlash
+    : `${withLeadingSlash}/`;
+  return withTrailingSlash.replace(/\/{2,}/g, '/');
+};
 
 const versions = (process.env.DOCS_VERSIONS ?? versionSlug)
   .split(',')
@@ -9,10 +19,11 @@ const versions = (process.env.DOCS_VERSIONS ?? versionSlug)
 
 const uniqueVersions = [...new Set(versions.concat(versionSlug))];
 const normalizedSiteUrl = siteUrl.replace(/\/+$/, '');
+const normalizedDocsSiteBase = normalizeBasePath(docsSiteBase);
 const createVersionHref = (version) =>
   version === versionSlug
     ? `${normalizedSiteUrl}${baseUrl}`
-    : `${normalizedSiteUrl}/docs/${version}/`;
+    : `${normalizedSiteUrl}${normalizedDocsSiteBase}docs/${version}/`;
 
 const versionItems = uniqueVersions.map((version) => ({
   label: version,
@@ -43,6 +54,11 @@ const config = {
     },
     navbar: {
       title: 'Kairos Docs',
+      logo: {
+        alt: 'Kairos Docs',
+        src: 'img/favicon.svg',
+        href: baseUrl,
+      },
       items: [
         {
           type: 'docSidebar',
