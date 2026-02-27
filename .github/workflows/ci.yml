@@ -1,13 +1,13 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - main
+
   pull_request:
     branches:
       - main
-      - "*.x"
-  push:
-    branches-ignore:
-      - gh-pages
 
 jobs:
   validate:
