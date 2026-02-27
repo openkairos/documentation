@@ -10,7 +10,11 @@ const loaded = existsSync(catalogPath)
   ? JSON.parse(readFileSync(catalogPath, 'utf8'))
   : [];
 
-const merged = [...new Set([...loaded, currentVersion])].sort((a, b) => {
+const isAllowedVersion = (version) => version === 'next' || /^[a-z0-9._-]+\.x$/.test(version);
+
+const merged = [...new Set([...loaded, currentVersion])]
+  .filter(isAllowedVersion)
+  .sort((a, b) => {
   if (a === 'next') return -1;
   if (b === 'next') return 1;
   return a.localeCompare(b, 'en');
