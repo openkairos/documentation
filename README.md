@@ -60,22 +60,6 @@ Run validation:
 npm run validate
 ```
 
-## Branding
-
-The Docusaurus theme uses `#ff343a` as its primary brand color.
-
-Landing page illustrations live in `static/img/illustrations/` and can be replaced with downloaded SVG assets from
-unDraw.
-
-## Repository structure
-
-- `docs/`: end-user markdown documentation
-- `scripts/resolve-version.mjs`: branch-to-version mapping
-- `scripts/build-version-catalog.mjs`: version catalog merge/update utility
-- `.github/workflows/ci.yml`: lint and build checks
-- `.github/workflows/deploy-docs.yml`: branch-aware GitHub Pages deployment
-- `.github/dependabot.yml`: dependency update automation
-
 ## GitHub Pages setup
 
 Set GitHub Pages source to the `gh-pages` branch root.

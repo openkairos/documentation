@@ -33,11 +33,11 @@ jobs:
 
       - name: Resolve target version
         id: version
-        run: node scripts/resolve-version.mjs --github-output "$GITHUB_OUTPUT"
+        run: node scripts/resolve-version.js --github-output "$GITHUB_OUTPUT"
 
       - name: Resolve default branch version
         id: default_version
-        run: node scripts/resolve-version.mjs "${{ github.event.repository.default_branch }}" --github-output "$GITHUB_OUTPUT"
+        run: node scripts/resolve-version.js "${{ github.event.repository.default_branch }}" --github-output "$GITHUB_OUTPUT"
 
       - name: Prepare gh-pages workspace
         env:
@@ -57,7 +57,7 @@ jobs:
         id: catalog
         run: |
           mkdir -p .gh-pages/docs
-          VERSION_CSV=$(node scripts/build-version-catalog.mjs .gh-pages/docs/versions.json "${{ steps.version.outputs.version_slug }}")
+          VERSION_CSV=$(node scripts/build-version-catalog.js .gh-pages/docs/versions.json "${{ steps.version.outputs.version_slug }}")
           echo "version_csv=${VERSION_CSV}" >> "$GITHUB_OUTPUT"
 
       - name: Resolve site base

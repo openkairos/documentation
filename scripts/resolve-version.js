@@ -1,3 +1,9 @@
+/**
+ * Purpose: map a branch name to a publishable docs version slug (`main` -> `next`).
+ * Usage: used by deploy workflow to compute target version paths and default redirects.
+ */
+const {appendFileSync} = require('node:fs');
+
 const args = process.argv.slice(2);
 
 const outputIndex = args.indexOf('--github-output');
@@ -15,7 +21,8 @@ const branchArg = args.find((arg, index) => {
   return true;
 });
 
-const branchName = branchArg || process.env.GITHUB_REF_NAME || process.env.BRANCH_NAME || 'main';
+const branchName =
+  branchArg || process.env.GITHUB_REF_NAME || process.env.BRANCH_NAME || 'main';
 
 const sanitize = (value) =>
   value
@@ -27,8 +34,10 @@ const sanitize = (value) =>
 const versionSlug = branchName === 'main' ? 'next' : sanitize(branchName) || 'next';
 
 if (githubOutputPath) {
-  const { appendFileSync } = await import('node:fs');
-  appendFileSync(githubOutputPath, `branch_name=${branchName}\nversion_slug=${versionSlug}\n`);
+  appendFileSync(
+    githubOutputPath,
+    `branch_name=${branchName}\nversion_slug=${versionSlug}\n`,
+  );
 }
 
 process.stdout.write(`${versionSlug}\n`);

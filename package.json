@@ -9,8 +9,7 @@
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
     "lint": "markdownlint \"README.md\" \"docs/**/*.md\"",
-    "validate": "npm run lint && npm run build",
-    "version:slug": "node ./scripts/resolve-version.mjs"
+    "validate": "npm run lint && npm run build"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",
@@ -24,7 +23,7 @@
     "markdownlint-cli": "^0.45.0"
   },
   "engines": {
-    "node": "24.x"
-  },
-  "packageManager": "npm@11"
+    "node": "24.x",
+    "npm": "11.x"
+  }
 }
