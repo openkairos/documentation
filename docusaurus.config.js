@@ -8,10 +8,15 @@ const versions = (process.env.DOCS_VERSIONS ?? versionSlug)
   .filter(Boolean);
 
 const uniqueVersions = [...new Set(versions.concat(versionSlug))];
+const normalizedSiteUrl = siteUrl.replace(/\/+$/, '');
+const createVersionHref = (version) =>
+  version === versionSlug
+    ? `${normalizedSiteUrl}${baseUrl}`
+    : `${normalizedSiteUrl}/docs/${version}/`;
 
 const versionItems = uniqueVersions.map((version) => ({
   label: version,
-  to: version === versionSlug ? baseUrl : `/docs/${version}/`,
+  href: createVersionHref(version),
 }));
 
 /** @type {import('@docusaurus/types').Config} */
