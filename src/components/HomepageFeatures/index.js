@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 const FeatureList = [
@@ -24,10 +25,12 @@ const FeatureList = [
 ];
 
 function Feature({ title, description, image }) {
+  const imageUrl = useBaseUrl(image);
+
   return (
     <div className={clsx('col col--4')}>
       <div className={styles.featureCard}>
-        <img className={styles.featureImage} src={image} alt={title} />
+        <img className={styles.featureImage} src={imageUrl} alt={title} />
         <h3>{title}</h3>
         <p>{description}</p>
       </div>

@@ -64,9 +64,15 @@ jobs:
             echo "site_url=https://${DOMAIN}" >> "$GITHUB_OUTPUT"
             echo "site_base=/" >> "$GITHUB_OUTPUT"
           else
+            OWNER_LC=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
             REPO_NAME="${GITHUB_REPOSITORY#*/}"
+            REPO_LC=$(echo "${REPO_NAME}" | tr '[:upper:]' '[:lower:]')
             echo "site_url=https://${GITHUB_REPOSITORY_OWNER}.github.io" >> "$GITHUB_OUTPUT"
-            echo "site_base=/${REPO_NAME}/" >> "$GITHUB_OUTPUT"
+            if [ "${REPO_LC}" = "${OWNER_LC}.github.io" ]; then
+              echo "site_base=/" >> "$GITHUB_OUTPUT"
+            else
+              echo "site_base=/${REPO_NAME}/" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       - name: Build Docusaurus site
@@ -85,28 +91,21 @@ jobs:
 
       - name: Create index redirects
         run: |
-          ROOT_TARGET="./docs/next/"
-          DOCS_TARGET="./next/"
-
-          cat > .gh-pages/index.html <<'HTML'
+          cat > .gh-pages/index.html <<EOF
           <!doctype html>
           <meta charset="utf-8">
-          <meta http-equiv="refresh" content="0; url=__ROOT_TARGET__">
+          <meta http-equiv="refresh" content="0; url=./docs/next/">
           <title>Kairos Docs</title>
-          <a href="__ROOT_TARGET__">Go to documentation</a>
-          HTML
+          <a href="./docs/next/">Go to documentation</a>
+          EOF
 
-          cat > .gh-pages/docs/index.html <<'HTML'
+          cat > .gh-pages/docs/index.html <<EOF
           <!doctype html>
           <meta charset="utf-8">
-          <meta http-equiv="refresh" content="0; url=__DOCS_TARGET__">
+          <meta http-equiv="refresh" content="0; url=./next/">
           <title>Kairos Docs</title>
-          <a href="__DOCS_TARGET__">Go to documentation</a>
-          HTML
-
-          sed -i.bak "s|__ROOT_TARGET__|${ROOT_TARGET}|g" .gh-pages/index.html
-          sed -i.bak "s|__DOCS_TARGET__|${DOCS_TARGET}|g" .gh-pages/docs/index.html
-          rm -f .gh-pages/index.html.bak .gh-pages/docs/index.html.bak
+          <a href="./next/">Go to documentation</a>
+          EOF
 
       - name: Commit and push gh-pages
         working-directory: .gh-pages

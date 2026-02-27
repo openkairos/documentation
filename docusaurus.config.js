@@ -20,6 +20,7 @@ const versions = (process.env.DOCS_VERSIONS ?? versionSlug)
 const uniqueVersions = [...new Set(versions.concat(versionSlug))];
 const normalizedSiteUrl = siteUrl.replace(/\/+$/, '');
 const normalizedDocsSiteBase = normalizeBasePath(docsSiteBase);
+const currentDocsHref = `${normalizedSiteUrl}${baseUrl}docs/intro`;
 const createVersionHref = (version) =>
   version === versionSlug
     ? `${normalizedSiteUrl}${baseUrl}`
@@ -57,12 +58,11 @@ const config = {
       logo: {
         alt: 'Kairos Docs',
         src: 'img/favicon.svg',
-        href: baseUrl,
+        href: `${normalizedSiteUrl}${baseUrl}`,
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          href: currentDocsHref,
           position: 'left',
           label: 'Documentation',
         },
