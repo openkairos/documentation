@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+
+:root {
+  --ifm-color-primary: #ff343a;
+  --ifm-color-primary-dark: #e62f34;
+  --ifm-color-primary-darker: #d92c31;
+  --ifm-color-primary-darkest: #b72428;
+  --ifm-color-primary-light: #ff4c52;
+  --ifm-color-primary-lighter: #ff585d;
+  --ifm-color-primary-lightest: #ff7b80;
+  --ifm-link-color: #d92c31;
+  --ifm-menu-color-active: #d92c31;
+  --ifm-font-family-base: 'Manrope', sans-serif;
+  --ifm-heading-font-family: 'Manrope', sans-serif;
+  --ifm-font-family-monospace: 'Fira Code', monospace;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #ff4c52;
+  --ifm-color-primary-dark: #ff343a;
+  --ifm-color-primary-darker: #ff262d;
+  --ifm-color-primary-darkest: #e20008;
+  --ifm-color-primary-light: #ff6469;
+  --ifm-color-primary-lighter: #ff7075;
+  --ifm-color-primary-lightest: #ff9498;
+  --ifm-link-color: #ff7b80;
+  --ifm-menu-color-active: #ff7b80;
+}
+
+.footer {
+  --ifm-footer-background-color: #1b1e22;
+}

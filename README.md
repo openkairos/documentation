@@ -1,147 +1,87 @@
-# Kairos
+# Kairos Docs
 
-Kairos is an open source Customer Data Platform designed to collect, unify, enrich, analyze, and activate customer data
-across the entire lifecycle. It combines the analytical power of insights CDPs with the activation power of Engagement
-CPDs, resulting in a platform that transforms raw data into meaningful action.
+This repository contains only end-user documentation for Kairos.
 
-Kairos gives teams a complete view of known and anonymous customers, allows deep analytics, and delivers real time
-personalization and orchestrated engagement across channels.
+The docs website is generated with Docusaurus and published to GitHub Pages with branch-based version paths.
 
-## Core Philosophy
+## Version publishing model
 
-In Greek, "Kairos" means "the right moment". The platform is built around the idea that customer data only becomes
-valuable when it can create understanding and drive action at the right moment.
+Only these branches are deployed:
 
-Kairos brings together:
+- `main`
+- `*.x` (for example: `1.x`, `2.x`, `beta.x`)
 
-* A system of insights for deep customer understanding.
-* A system of Engagement for real time activation.
-* A unified real time customer profile.
-* A platform echosystem for developers and teams.
+Published paths:
 
-## Feature Summary
+- `main` -> `/docs/next`
+- `1.x` -> `/docs/1.x`
+- `2.x` -> `/docs/2.x`
+- `beta.x` -> `/docs/beta.x`
 
-| Capability             | Insights CDP | Engagement CDP | Kairos |
-|------------------------|--------------|----------------|--------|
-| 360 Profile            | ✓            | ✓              | ✓      |
-| Segmentation           | ✓            | ✓              | ✓      |
-| Predictive analytics   | ✓            | —              | ✓      |
-| Personalization        | —            | ✓              | ✓      |
-| Campaign orchestration | —            | ✓              | ✓      |
-| Activation             | —            | ✓              | ✓      |
-| Developer platform     | Partial      | Partial        | Full   |
-| Governance             | ✓            | ✓              | ✓      |
+Branches outside this policy (for example `feature/*`) are not deployed.
 
-## Key Capabilities
+A version selector in the navbar is generated from `docs/versions.json` on the `gh-pages` branch.
 
-### 1. Data collection and Ingestion
+## Local development
 
-Kairos supports:
+Requirements:
 
-* First party behavioral events.
-* Transactional records.
-* CRM data.
-* Offline imports.
-* Third party enrichment.
-* Realtime event streams.
+- Node.js 24.x
+- npm
+- `.npmrc` enforces `engine-strict=true` (installation fails on non-24 Node runtimes)
 
-### 2. Identity Resolution
+Install dependencies:
 
-Kairos includes:
+```bash
+npm install
+```
 
-* Deterministic and probabilistic matching.
-* Identity graphs.
-* Profile stitching across devices and channels.
-* Unification of anonymous and known customer data.
+Run the docs locally:
 
-### 3. Unified Customer Profile
+```bash
+npm run start
+```
 
-Real time merged profiles including:
+Build static files:
 
-* Personal data.
-* Behavioral history.
-* Transactional data.
-* Preferences and segments.
-* Predictive attributes.
-* Consent and GDPR metadata.
+```bash
+npm run build
+```
 
-### 4. Audience Building and Segmentation
+Serve the built site:
 
-Kairos supports:
+```bash
+npm run serve
+```
 
-* Real time segmentation.
-* Predictive segments.
-* Rule and event based segments.
-* Frequency and recency analysis.
-* [LTV](https://en.wikipedia.org/wiki/Customer_lifetime_value) and propensity scoring.
+Run validation:
 
-### 5. Analytics, Modeling, and Insights
+```bash
+npm run validate
+```
 
-Capabilities include:
+## Branding
 
-* LTV analysis.
-* [Propensity modeling](https://archive.is/k60oU).
-* Churn prediction.
-* Cohort analysis.
-* Trend discovery.
-* Multi-touch journeys.
-* Custom dashboards via [Aletheia](https://github.com/openkairos/aletheia).
+The Docusaurus theme uses `#ff343a` as its primary brand color.
 
-### 6. Real Time Personalization
+Landing page illustrations live in `static/img/illustrations/` and can be replaced with downloaded SVG assets from
+unDraw.
 
-* Profile lookups in milliseconds.
-* Context aware recommendations.
-* Trigger based personalization.
-* Streaming segment evaluation.
+## Repository structure
 
-### 7. Cross Channel Orchestration
+- `docs/`: end-user markdown documentation
+- `scripts/resolve-version.mjs`: branch-to-version mapping
+- `scripts/build-version-catalog.mjs`: version catalog merge/update utility
+- `.github/workflows/ci.yml`: lint and build checks
+- `.github/workflows/deploy-docs.yml`: branch-aware GitHub Pages deployment
+- `.github/dependabot.yml`: dependency update automation
 
-* Journey orchestration.
-* Event driven workflows.
-* Multi-channel message routing.
-* Conditional logic and branching.
-* Frequency capping.
+## GitHub Pages setup
 
-### 8. Activation and Campaign Execution
+Set GitHub Pages source to the `gh-pages` branch root.
 
-Supports integrations for:
+The deploy workflow updates:
 
-* Email.
-* SMS.
-* Push notifications.
-* Web personalization.
-* Advertising audiences.
-* CRM updates.
-
-### 9. Developer Friendly Platform
-
-Kairos offers:
-
-* APIs and SDKs
-* Webhooks
-* Plugin architecture
-* Reverse ETL
-* Developer sandbox environments
-
-### 10. Governance, Privacy, and Security
-
-* Consent tracking
-* Data lineage
-* Role based access
-* Data minimization
-* Audit trails
-
-## Documentation Structure
-
-All documentation is organized in the `/docs` directory with the following structure:
-
-- **[/docs/requirements](docs/requirements/README.md)** - Requirements documentation
-- **[/docs/design](docs/design/README.md)** - Design documentation
-- **[/docs/technical](docs/technical/README.md)** - Technical documentation
-- **[/docs/quality-assurance](docs/quality-assurance/README.md)** - Quality assurance documentation
-- **[/docs/user](docs/user/README.md)** - User documentation
-
-## Contributing
-
-All documentation is written in Markdown (`.md`) files. Please place documentation in the appropriate directory based on
-its type.
+- `/docs/<version>/` for the current branch build
+- `/docs/versions.json` for version navigation
+- root redirects to `/docs/next/`
