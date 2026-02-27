@@ -2,6 +2,7 @@ const {
   buildVersionNavbarItems,
 } = require('./scripts/build-version-navbar-items');
 const {resolveDocsRuntime} = require('./scripts/resolve-docs-runtime');
+const prismReact = require('prism-react-renderer');
 
 const {
   versionSlug,
@@ -21,8 +22,8 @@ const versionItems = buildVersionNavbarItems({
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Kairos Docs',
-  tagline: 'End-user documentation',
+  title: 'Open Kairos',
+  tagline: 'Open Source CDP',
   favicon: 'img/favicon.svg',
   url: siteUrl,
   baseUrl,
@@ -43,9 +44,9 @@ const config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'Kairos Docs',
+      title: 'Open Kairos',
       logo: {
-        alt: 'Kairos Docs',
+        alt: 'Open Kairos Logo',
         src: 'img/favicon.svg',
         href: baseUrl,
       },
@@ -71,10 +72,17 @@ const config = {
       style: 'dark',
       links: [],
       copyright: `Copyright © 2026 Kairos.`,
+      logo: {
+        alt: 'Kairos Logo',
+        src: 'img/favicon.svg',
+        href: baseUrl,
+        width: 32,
+        height: 32,
+      },
     },
     prism: {
-      theme: require('prism-react-renderer').themes.github,
-      darkTheme: require('prism-react-renderer').themes.dracula,
+      theme: prismReact.themes.github,
+      darkTheme: prismReact.themes.dracula,
     },
   },
   presets: [
