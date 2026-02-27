@@ -56,12 +56,26 @@ jobs:
           VERSION_CSV=$(node scripts/build-version-catalog.mjs .gh-pages/docs/versions.json "${{ steps.version.outputs.version_slug }}")
           echo "version_csv=${VERSION_CSV}" >> "$GITHUB_OUTPUT"
 
+      - name: Resolve site base
+        id: site
+        run: |
+          if [ -f .gh-pages/CNAME ]; then
+            DOMAIN=$(head -n 1 .gh-pages/CNAME | tr -d '[:space:]')
+            echo "site_url=https://${DOMAIN}" >> "$GITHUB_OUTPUT"
+            echo "site_base=/" >> "$GITHUB_OUTPUT"
+          else
+            REPO_NAME="${GITHUB_REPOSITORY#*/}"
+            echo "site_url=https://${GITHUB_REPOSITORY_OWNER}.github.io" >> "$GITHUB_OUTPUT"
+            echo "site_base=/${REPO_NAME}/" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build Docusaurus site
         env:
           DOCS_VERSION: ${{ steps.version.outputs.version_slug }}
           DOCS_VERSIONS: ${{ steps.catalog.outputs.version_csv }}
-          DOCS_BASE_URL: /docs/${{ steps.version.outputs.version_slug }}/
-          SITE_URL: https://${{ github.repository_owner }}.github.io
+          DOCS_SITE_BASE: ${{ steps.site.outputs.site_base }}
+          DOCS_BASE_URL: ${{ steps.site.outputs.site_base }}docs/${{ steps.version.outputs.version_slug }}/
+          SITE_URL: ${{ steps.site.outputs.site_url }}
         run: npm run build
 
       - name: Publish version folder
@@ -71,21 +85,28 @@ jobs:
 
       - name: Create index redirects
         run: |
+          ROOT_TARGET="./docs/next/"
+          DOCS_TARGET="./next/"
+
           cat > .gh-pages/index.html <<'HTML'
           <!doctype html>
           <meta charset="utf-8">
-          <meta http-equiv="refresh" content="0; url=/docs/next/">
+          <meta http-equiv="refresh" content="0; url=__ROOT_TARGET__">
           <title>Kairos Docs</title>
-          <a href="/docs/next/">Go to documentation</a>
+          <a href="__ROOT_TARGET__">Go to documentation</a>
           HTML
 
           cat > .gh-pages/docs/index.html <<'HTML'
           <!doctype html>
           <meta charset="utf-8">
-          <meta http-equiv="refresh" content="0; url=/docs/next/">
+          <meta http-equiv="refresh" content="0; url=__DOCS_TARGET__">
           <title>Kairos Docs</title>
-          <a href="/docs/next/">Go to documentation</a>
+          <a href="__DOCS_TARGET__">Go to documentation</a>
           HTML
+
+          sed -i.bak "s|__ROOT_TARGET__|${ROOT_TARGET}|g" .gh-pages/index.html
+          sed -i.bak "s|__DOCS_TARGET__|${DOCS_TARGET}|g" .gh-pages/docs/index.html
+          rm -f .gh-pages/index.html.bak .gh-pages/docs/index.html.bak
 
       - name: Commit and push gh-pages
         working-directory: .gh-pages

@@ -84,4 +84,4 @@ The deploy workflow updates:
 
 - `/docs/<version>/` for the current branch build
 - `/docs/versions.json` for version navigation
-- root redirects to `/docs/next/`
+- root redirects to `./docs/next/` (relative redirect, base-path safe)
