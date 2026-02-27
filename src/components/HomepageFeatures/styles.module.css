@@ -1,22 +1,23 @@
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+    margin-top: 2rem;
 }
 
 .featureCard {
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 0.75rem;
-  padding: 1rem;
-  height: 100%;
-  background: var(--ifm-background-color);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background: var(--ifm-background-color);
+    margin-bottom: 2rem;
+}
+
+.featureCard:hover {
+    border-color: var(--ifm-color-primary);
 }
 
 .featureImage {
-  display: block;
-  width: 100%;
-  max-height: 170px;
-  object-fit: contain;
-  margin-bottom: 0.75rem;
+    display: block;
+    width: 100%;
+    max-height: 170px;
+    object-fit: contain;
+    margin-bottom: 0.75rem;
 }
