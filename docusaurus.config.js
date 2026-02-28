@@ -1,41 +1,29 @@
-const versionSlug = process.env.DOCS_VERSION ?? 'next';
-const siteUrl = process.env.SITE_URL ?? 'http://localhost:3000';
-const baseUrl = process.env.DOCS_BASE_URL ?? '/';
-const docsSiteBase = process.env.DOCS_SITE_BASE ?? '/';
+const {
+  buildVersionNavbarItems,
+} = require('./scripts/build-version-navbar-items');
+const {resolveDocsRuntime} = require('./scripts/resolve-docs-runtime');
+const prismReact = require('prism-react-renderer');
 
-const normalizeBasePath = (value) => {
-  const trimmed = value.trim();
-  const withLeadingSlash = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
-  const withTrailingSlash = withLeadingSlash.endsWith('/')
-      ? withLeadingSlash
-      : `${withLeadingSlash}/`;
-  return withTrailingSlash.replace(/\/{2,}/g, '/');
-};
+const {
+  versionSlug,
+  siteUrl,
+  baseUrl,
+  docsSiteBase,
+  versions,
+} = resolveDocsRuntime();
 
-const versions = (process.env.DOCS_VERSIONS ?? versionSlug).split(',').
-    map((value) => value.trim()).
-    filter(Boolean);
-
-const uniqueVersions = [...new Set(versions.concat(versionSlug))];
-const normalizedSiteUrl = siteUrl.replace(/\/+$/, '');
-const normalizedDocsSiteBase = normalizeBasePath(docsSiteBase);
-const createVersionTo = (version) => {
-  if (version === versionSlug) {
-    return `${normalizedSiteUrl}${baseUrl}`;
-  }
-
-  return `${normalizedSiteUrl}${normalizedDocsSiteBase}docs/${version}/`;
-};
-
-const versionItems = uniqueVersions.map((version) => ({
-  label: version,
-  to: createVersionTo(version),
-}));
+const versionItems = buildVersionNavbarItems({
+  versions,
+  versionSlug,
+  siteUrl,
+  baseUrl,
+  docsSiteBase,
+});
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Kairos Docs',
-  tagline: 'End-user documentation',
+  title: 'Open Kairos',
+  tagline: 'Open Source CDP',
   favicon: 'img/favicon.svg',
   url: siteUrl,
   baseUrl,
@@ -56,9 +44,9 @@ const config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'Kairos Docs',
+      title: 'Open Kairos',
       logo: {
-        alt: 'Kairos Docs',
+        alt: 'Open Kairos Logo',
         src: 'img/favicon.svg',
         href: baseUrl,
       },
@@ -84,10 +72,17 @@ const config = {
       style: 'dark',
       links: [],
       copyright: `Copyright © 2026 Kairos.`,
+      logo: {
+        alt: 'Kairos Logo',
+        src: 'img/favicon.svg',
+        href: baseUrl,
+        width: 32,
+        height: 32,
+      },
     },
     prism: {
-      theme: require('prism-react-renderer').themes.github,
-      darkTheme: require('prism-react-renderer').themes.dracula,
+      theme: prismReact.themes.github,
+      darkTheme: prismReact.themes.dracula,
     },
   },
   presets: [
