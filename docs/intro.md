@@ -23,6 +23,12 @@ Kairos brings together:
 
 ## Feature summary
 
+:::warning
+
+This is long-term vision and roadmap. Not all features are available at launch.
+
+:::
+
 | Capability             | Insights CDP | Engagement CDP | Kairos |
 |------------------------|--------------|----------------|--------|
 | 360 Profile            | Yes          | Yes            | Yes    |
