@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kairos API Docs</title>
+  {{>styles}}{{! prevent indent}}
+</head>
+<body>
+  <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar-nav">Menu</button>
+
+  <div id="mobile-overlay" class="mobile-overlay"></div>
+
+  <div class="layout">
+    {{>sidebar}}{{! prevent indent}}
+    {{>main-content}}{{! prevent indent}}
+  </div>
+
+  {{>behavior}}{{! prevent indent}}
+</body>
+</html>

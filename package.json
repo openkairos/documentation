@@ -8,7 +8,7 @@
     "dev": "concurrently -k \"npm:watch:api\" \"npm:start\"",
     "build": "docusaurus build",
     "build:api": "openapi-generator-cli generate",
-    "watch:api": "chokidar \"openapi/openapi.yaml\" \"openapi/templates/kairos/**/*.mustache\" -c \"npm run build:api\" --initial",
+    "watch:api": "chokidar \"openapi/openapi.yaml\" \"openapi/templates/**/*.mustache\" -c \"npm run build:api\" --initial",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
     "lint": "markdownlint \"README.md\" \"docs/**/*.md\"",

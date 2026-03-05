@@ -1,0 +1,104 @@
+<main class="content">
+  <p class="eyebrow">API Reference</p>
+  <h1>Kairos Public API</h1>
+  <p class="lead">
+    This is a static scaffold for the next template version. Content is hardcoded for now and will be replaced by dynamic OpenAPI sections later.
+  </p>
+
+  <section id="overview">
+    <h2>Overview</h2>
+    <div class="card">
+      <p>Use the Kairos API to manage users, billing plans, and subscriptions programmatically. All endpoints use JSON over HTTPS.</p>
+    </div>
+  </section>
+
+  <section id="authentication">
+    <h2>Authentication</h2>
+    <div class="card">
+      <p>Send your API key in the Authorization header:</p>
+      <pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+    </div>
+  </section>
+
+  <section id="errors">
+    <h2>Error Handling</h2>
+    <div class="card table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Code</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>400</td>
+            <td>bad_request</td>
+            <td>The payload is invalid or missing required fields.</td>
+          </tr>
+          <tr>
+            <td>401</td>
+            <td>unauthorized</td>
+            <td>The API key is missing, invalid, or expired.</td>
+          </tr>
+          <tr>
+            <td>429</td>
+            <td>rate_limited</td>
+            <td>Too many requests were sent in a short period.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="list-users">
+    <h2>List Users</h2>
+    <div class="card">
+      <div class="endpoint"><span class="method get">GET</span><span>/v1/users</span></div>
+      <p>Returns a paginated list of users for your workspace.</p>
+      <pre><code>{
+  "data": [
+    { "id": "usr_1", "email": "alex@example.com" }
+  ],
+  "nextCursor": "usr_2"
+}</code></pre>
+    </div>
+  </section>
+
+  <section id="create-user">
+    <h2>Create User</h2>
+    <div class="card">
+      <div class="endpoint"><span class="method post">POST</span><span>/v1/users</span></div>
+      <p>Creates a new user and returns the created resource.</p>
+      <pre><code>{
+  "email": "new.user@example.com",
+  "name": "New User"
+}</code></pre>
+    </div>
+  </section>
+
+  <section id="delete-user">
+    <h2>Delete User</h2>
+    <div class="card">
+      <div class="endpoint"><span class="method delete">DELETE</span><span>/v1/users/{userId}</span></div>
+      <p>Deletes the selected user.</p>
+    </div>
+  </section>
+
+  <section id="list-plans">
+    <h2>List Plans</h2>
+    <div class="card">
+      <div class="endpoint"><span class="method get">GET</span><span>/v1/billing/plans</span></div>
+      <p>Returns available billing plans and pricing details.</p>
+    </div>
+  </section>
+
+  <section id="create-subscription">
+    <h2>Create Subscription</h2>
+    <div class="card">
+      <div class="endpoint"><span class="method post">POST</span><span>/v1/billing/subscriptions</span></div>
+      <p>Creates a subscription for a customer.</p>
+    </div>
+  </section>
+</main>

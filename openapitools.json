@@ -8,7 +8,7 @@
         "generatorName": "html2",
         "inputSpec": "openapi/openapi.yaml",
         "output": "static/openapi",
-        "templateDir": "openapi/templates/kairos"
+        "templateDir": "openapi/templates/kairos-2"
       }
     }
   }
