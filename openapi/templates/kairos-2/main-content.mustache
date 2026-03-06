@@ -2,7 +2,7 @@
   <p class="eyebrow">API Reference</p>
   <h1>Kairos Public API</h1>
   <p class="lead">
-    This is a static scaffold for the next template version. Content is hardcoded for now and will be replaced by dynamic OpenAPI sections later.
+    Static scaffold for the API docs layout. Content is hardcoded for now and will be replaced by generated data later.
   </p>
 
   <section>
@@ -54,51 +54,257 @@
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="list-users">List Users<a href="#list-users" class="hash-link" aria-label="Direct link to List Users" title="Direct link to List Users" translate="no">​</a></h2>
-    <div class="card">
-      <div class="endpoint"><span class="method get">GET</span><span>/v1/users</span></div>
-      <p>Returns a paginated list of users for your workspace.</p>
-      <pre><code>{
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method get">GET</span><span>/v1/users</span></div>
+        <p>Returns a paginated list of users for your workspace.</p>
+        <div class="card">
+          <h3>Query parameters</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>limit</td><td>integer</td><td>Maximum number of records per page.</td></tr>
+                <tr><td>cursor</td><td>string</td><td>Opaque pagination cursor for next page.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <aside class="api-operation__aside">
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Request Example</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
+              <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
+              <button type="button" class="code-tab" data-code-tab="java">Java</button>
+              <button type="button" class="code-tab" data-code-tab="python">Python</button>
+              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request GET \
+  --url https://api.kairos.dev/v1/users?limit=20 \
+  --header 'Authorization: Bearer YOUR_API_KEY'</code></pre></div>
+          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/users?limit=20', {
+  headers: { Authorization: `Bearer ${process.env.KAIROS_API_KEY}` }
+});
+const data = await res.json();</code></pre></div>
+          <div class="code-pane" data-code-pane="java"><pre><code>HttpRequest request = HttpRequest.newBuilder()
+  .uri(URI.create("https://api.kairos.dev/v1/users?limit=20"))
+  .header("Authorization", "Bearer " + apiKey)
+  .GET()
+  .build();</code></pre></div>
+          <div class="code-pane" data-code-pane="python"><pre><code>import requests
+resp = requests.get(
+  "https://api.kairos.dev/v1/users",
+  params={"limit": 20},
+  headers={"Authorization": f"Bearer {api_key}"}
+)</code></pre></div>
+          <div class="code-pane" data-code-pane="php"><pre><code>$client = new \GuzzleHttp\Client();
+$response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
+  'query' => ['limit' => 20],
+  'headers' => ['Authorization' => "Bearer {$apiKey}"]
+]);</code></pre></div>
+        </div>
+
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{
   "data": [
-    { "id": "usr_1", "email": "alex@example.com" }
+    { "id": "usr_1", "email": "alex@example.com", "status": "active" }
   ],
   "nextCursor": "usr_2"
 }</code></pre>
+        </div>
+      </aside>
     </div>
   </section>
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="create-user">Create User<a href="#create-user" class="hash-link" aria-label="Direct link to Create User" title="Direct link to Create User" translate="no">​</a></h2>
-    <div class="card">
-      <div class="endpoint"><span class="method post">POST</span><span>/v1/users</span></div>
-      <p>Creates a new user and returns the created resource.</p>
-      <pre><code>{
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method post">POST</span><span>/v1/users</span></div>
+        <p>Creates a user and returns the created resource.</p>
+        <div class="card">
+          <h3>Request body</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>email</td><td>string</td><td>yes</td><td>User email address.</td></tr>
+                <tr><td>name</td><td>string</td><td>yes</td><td>Display name.</td></tr>
+                <tr><td>locale</td><td>string</td><td>no</td><td>Locale code (for example `en-US`).</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <aside class="api-operation__aside">
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Request Example</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
+              <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
+              <button type="button" class="code-tab" data-code-tab="java">Java</button>
+              <button type="button" class="code-tab" data-code-tab="python">Python</button>
+              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request POST \
+  --url https://api.kairos.dev/v1/users \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{"email":"new.user@example.com","name":"New User"}'</code></pre></div>
+          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/users', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.KAIROS_API_KEY}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ email: 'new.user@example.com', name: 'New User' })
+});</code></pre></div>
+          <div class="code-pane" data-code-pane="java"><pre><code>String payload = "{\"email\":\"new.user@example.com\",\"name\":\"New User\"}";
+HttpRequest request = HttpRequest.newBuilder()
+  .uri(URI.create("https://api.kairos.dev/v1/users"))
+  .header("Authorization", "Bearer " + apiKey)
+  .header("Content-Type", "application/json")
+  .POST(HttpRequest.BodyPublishers.ofString(payload))
+  .build();</code></pre></div>
+          <div class="code-pane" data-code-pane="python"><pre><code>import requests
+resp = requests.post(
+  "https://api.kairos.dev/v1/users",
+  json={"email": "new.user@example.com", "name": "New User"},
+  headers={"Authorization": f"Bearer {api_key}"}
+)</code></pre></div>
+          <div class="code-pane" data-code-pane="php"><pre><code>$client = new \GuzzleHttp\Client();
+$response = $client->request('POST', 'https://api.kairos.dev/v1/users', [
+  'json' => ['email' => 'new.user@example.com', 'name' => 'New User'],
+  'headers' => ['Authorization' => "Bearer {$apiKey}"]
+]);</code></pre></div>
+        </div>
+
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{
+  "id": "usr_9f3ac",
   "email": "new.user@example.com",
-  "name": "New User"
+  "name": "New User",
+  "status": "active"
 }</code></pre>
+        </div>
+      </aside>
     </div>
   </section>
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="delete-user">Delete User<a href="#delete-user" class="hash-link" aria-label="Direct link to Delete User" title="Direct link to Delete User" translate="no">​</a></h2>
-    <div class="card">
-      <div class="endpoint"><span class="method delete">DELETE</span><span>/v1/users/{userId}</span></div>
-      <p>Deletes the selected user.</p>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method delete">DELETE</span><span>/v1/users/{userId}</span></div>
+        <p>Deletes the selected user.</p>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{ "deleted": true }</code></pre>
+        </div>
+      </aside>
     </div>
   </section>
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="list-plans">List Plans<a href="#list-plans" class="hash-link" aria-label="Direct link to List Plans" title="Direct link to List Plans" translate="no">​</a></h2>
-    <div class="card">
-      <div class="endpoint"><span class="method get">GET</span><span>/v1/billing/plans</span></div>
-      <p>Returns available billing plans and pricing details.</p>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method get">GET</span><span>/v1/billing/plans</span></div>
+        <p>Returns available billing plans and pricing details.</p>
+      </div>
+
+      <aside class="api-operation__aside">
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Request Example</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
+              <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
+              <button type="button" class="code-tab" data-code-tab="java">Java</button>
+              <button type="button" class="code-tab" data-code-tab="python">Python</button>
+              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request GET \
+  --url https://api.kairos.dev/v1/billing/plans \
+  --header 'Authorization: Bearer YOUR_API_KEY'</code></pre></div>
+          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/billing/plans', {
+  headers: { Authorization: `Bearer ${process.env.KAIROS_API_KEY}` }
+});</code></pre></div>
+          <div class="code-pane" data-code-pane="java"><pre><code>HttpRequest request = HttpRequest.newBuilder()
+  .uri(URI.create("https://api.kairos.dev/v1/billing/plans"))
+  .header("Authorization", "Bearer " + apiKey)
+  .GET()
+  .build();</code></pre></div>
+          <div class="code-pane" data-code-pane="python"><pre><code>resp = requests.get(
+  "https://api.kairos.dev/v1/billing/plans",
+  headers={"Authorization": f"Bearer {api_key}"}
+)</code></pre></div>
+          <div class="code-pane" data-code-pane="php"><pre><code>$response = $client->request('GET', 'https://api.kairos.dev/v1/billing/plans', [
+  'headers' => ['Authorization' => "Bearer {$apiKey}"]
+]);</code></pre></div>
+        </div>
+
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{
+  "data": [
+    { "id": "starter", "name": "Starter", "priceMonthly": 19 },
+    { "id": "growth", "name": "Growth", "priceMonthly": 99 }
+  ]
+}</code></pre>
+        </div>
+      </aside>
     </div>
   </section>
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="create-subscription">Create Subscription<a href="#create-subscription" class="hash-link" aria-label="Direct link to Create Subscription" title="Direct link to Create Subscription" translate="no">​</a></h2>
-    <div class="card">
-      <div class="endpoint"><span class="method post">POST</span><span>/v1/billing/subscriptions</span></div>
-      <p>Creates a subscription for a customer.</p>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method post">POST</span><span>/v1/billing/subscriptions</span></div>
+        <p>Creates a subscription for a customer.</p>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{ "id": "sub_001", "status": "active" }</code></pre>
+        </div>
+      </aside>
     </div>
   </section>
 </main>
