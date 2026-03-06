@@ -226,6 +226,50 @@
     color: #4f5d75;
   }
 
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 20px;
+  }
+
+  .doc-meta__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 999px;
+    background: #f8f9fb;
+    padding: 7px 12px 7px 9px;
+    font-size: 13px;
+    color: #3d4652;
+  }
+
+  .doc-meta__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: rgba(217, 44, 49, 0.1);
+    color: var(--ifm-color-primary-darker);
+    flex: 0 0 auto;
+  }
+
+  .doc-meta__link {
+    color: var(--ifm-link-color);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .doc-meta__link:hover,
+  .doc-meta__link:focus,
+  .doc-meta__link:visited {
+    color: var(--ifm-link-color);
+    text-decoration: underline;
+  }
+
   section {
     margin-top: 44px;
     scroll-margin-top: 18px;
@@ -274,49 +318,6 @@
     padding: 20px;
     margin-bottom: 14px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02);
-  }
-
-  .overview-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 14px;
-  }
-
-  .overview-kicker {
-    margin: 0 0 6px;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 800;
-    color: var(--ifm-color-primary-darker);
-  }
-
-  .overview-title {
-    margin: 0;
-    font-size: 24px;
-    line-height: 1.2;
-  }
-
-  .overview-description {
-    margin: 10px 0 0;
-    color: #4f5d75;
-    line-height: 1.65;
-  }
-
-  .overview-meta {
-    display: grid;
-    gap: 8px;
-  }
-
-  .overview-meta__item {
-    display: block;
-    border: 1px solid var(--ifm-color-emphasis-200);
-    border-radius: 10px;
-    background: #f8f9fb;
-    padding: 8px 10px;
-    font-size: 14px;
-    line-height: 1.35;
-    word-break: break-word;
   }
 
   .api-operation {
@@ -544,10 +545,6 @@
 
     .content {
       padding: 58px 16px 56px;
-    }
-
-    .overview-grid {
-      grid-template-columns: 1fr;
     }
 
     .api-operation {

@@ -1,34 +1,36 @@
 <main class="content">
   <p class="eyebrow">API Reference</p>
-  <h1>Kairos Public API</h1>
+  <h1>{{{appName}}}</h1>
   <p class="lead">
-    Hard-coded showcase for all major output shapes produced by the <code>html2</code> generator.
-    This page is intentionally static so the visual system can be validated before wiring dynamic generation.
+    {{{appDescription}}}
   </p>
 
-  <section>
-    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="overview">Overview<a href="#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview" translate="no">​</a></h2>
-    <div class="overview-grid">
-      <div class="card">
-        <p class="overview-kicker">Application</p>
-        <h3 class="overview-title">Kairos Public API</h3>
-        <p class="overview-description">
-          API and SDK documentation for platform endpoints used to manage users, billing, and subscriptions.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="overview-kicker">Metadata</p>
-        <div class="overview-meta">
-          <span class="overview-meta__item"><strong>Version:</strong> 2026-03</span>
-          <span class="overview-meta__item"><strong>Generated:</strong> 2026-03-06T11:30:00Z</span>
-          <span class="overview-meta__item"><strong>License:</strong> Apache-2.0</span>
-          <span class="overview-meta__item"><strong>Docs:</strong> <a href="https://kairos.dev/docs">https://kairos.dev/docs</a></span>
-          <span class="overview-meta__item"><strong>Contact:</strong> <a href="mailto:api-support@kairos.dev">api-support@kairos.dev</a></span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="doc-meta">
+    {{#version}}
+    <span class="doc-meta__item">
+      <span class="doc-meta__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" focusable="false">
+          <path fill="currentColor" d="M5 5h14v2H5zm0 6h8v2H5zm0 6h14v2H5z"></path>
+        </svg>
+      </span>
+      <span><strong>Version:</strong> {{{.}}}</span>
+    </span>
+    {{/version}}
+    {{#licenseInfo}}
+    <span class="doc-meta__item">
+      <span class="doc-meta__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" focusable="false">
+          <path fill="currentColor" d="M12 2l8 4v6c0 5-3.4 9.5-8 10-4.6-.5-8-5-8-10V6zm0 2.2L6 7v5c0 3.8 2.4 7.4 6 8.4 3.6-1 6-4.6 6-8.4V7z"></path>
+        </svg>
+      </span>
+      <span>
+        <strong>License:</strong>
+        {{#licenseUrl}}<a href="{{{.}}}" class="doc-meta__link">{{{licenseInfo}}}</a>{{/licenseUrl}}
+        {{^licenseUrl}}{{{licenseInfo}}}{{/licenseUrl}}
+      </span>
+    </span>
+    {{/licenseInfo}}
+  </div>
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="authentication">Authentication<a href="#authentication" class="hash-link" aria-label="Direct link to Authentication" title="Direct link to Authentication" translate="no">​</a></h2>
