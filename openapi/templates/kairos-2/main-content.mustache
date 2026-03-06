@@ -2,21 +2,43 @@
   <p class="eyebrow">API Reference</p>
   <h1>Kairos Public API</h1>
   <p class="lead">
-    Static scaffold for the API docs layout. Content is hardcoded for now and will be replaced by generated data later.
+    Hard-coded showcase for all major output shapes produced by the <code>html2</code> generator.
+    This page is intentionally static so the visual system can be validated before wiring dynamic generation.
   </p>
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="overview">Overview<a href="#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview" translate="no">​</a></h2>
     <div class="card">
-      <p>Use the Kairos API to manage users, billing plans, and subscriptions programmatically. All endpoints use JSON over HTTPS.</p>
+      <p><strong>Title:</strong> Kairos Public API</p>
+      <p><strong>Version:</strong> 2026-03</p>
+      <p><strong>Base URL:</strong> <code>https://api.kairos.dev</code></p>
+      <p><strong>Description:</strong> Manage users, billing, subscriptions, and webhooks using JSON over HTTPS.</p>
+      <p><strong>Contact:</strong> <a href="mailto:api-support@kairos.dev">api-support@kairos.dev</a></p>
+      <p><strong>License:</strong> Apache-2.0</p>
+      <p><strong>Info URL:</strong> <a href="https://kairos.dev/docs">https://kairos.dev/docs</a></p>
+      <p><strong>Generated:</strong> 2026-03-06T11:30:00Z</p>
     </div>
   </section>
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="authentication">Authentication<a href="#authentication" class="hash-link" aria-label="Direct link to Authentication" title="Direct link to Authentication" translate="no">​</a></h2>
     <div class="card">
-      <p>Send your API key in the Authorization header:</p>
-      <pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+      <p>All protected endpoints require OAuth 2.0 bearer tokens.</p>
+      <pre><code>Authorization: Bearer YOUR_ACCESS_TOKEN</code></pre>
+    </div>
+    <div class="card table-wrap">
+      <h3>Scopes</h3>
+      <table>
+        <thead>
+          <tr><th>Scope</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>users:read</code></td><td>Read users and profile data.</td></tr>
+          <tr><td><code>users:write</code></td><td>Create and update users.</td></tr>
+          <tr><td><code>billing:read</code></td><td>Read plans, invoices, and usage.</td></tr>
+          <tr><td><code>billing:write</code></td><td>Create and manage subscriptions.</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -32,21 +54,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>400</td>
-            <td>bad_request</td>
-            <td>The payload is invalid or missing required fields.</td>
-          </tr>
-          <tr>
-            <td>401</td>
-            <td>unauthorized</td>
-            <td>The API key is missing, invalid, or expired.</td>
-          </tr>
-          <tr>
-            <td>429</td>
-            <td>rate_limited</td>
-            <td>Too many requests were sent in a short period.</td>
-          </tr>
+          <tr><td>400</td><td><code>bad_request</code></td><td>Payload is invalid or missing required fields.</td></tr>
+          <tr><td>401</td><td><code>unauthorized</code></td><td>Missing or invalid bearer token.</td></tr>
+          <tr><td>403</td><td><code>forbidden</code></td><td>Token lacks required scope.</td></tr>
+          <tr><td>404</td><td><code>not_found</code></td><td>Resource does not exist.</td></tr>
+          <tr><td>409</td><td><code>conflict</code></td><td>Resource state conflict.</td></tr>
+          <tr><td>422</td><td><code>validation_error</code></td><td>Semantic validation failed.</td></tr>
+          <tr><td>429</td><td><code>rate_limited</code></td><td>Rate limit exceeded.</td></tr>
+          <tr><td>500</td><td><code>internal_error</code></td><td>Unexpected server failure.</td></tr>
         </tbody>
       </table>
     </div>
@@ -57,17 +72,18 @@
     <div class="api-operation">
       <div class="api-operation__main">
         <div class="endpoint"><span class="method get">GET</span><span>/v1/users</span></div>
-        <p>Returns a paginated list of users for your workspace.</p>
+        <p>Returns a paginated users collection. Covers query params + header response metadata.</p>
+
         <div class="card">
           <h3>Query parameters</h3>
           <div class="table-wrap">
             <table>
-              <thead>
-                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-              </thead>
+              <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
               <tbody>
-                <tr><td>limit</td><td>integer</td><td>Maximum number of records per page.</td></tr>
-                <tr><td>cursor</td><td>string</td><td>Opaque pagination cursor for next page.</td></tr>
+                <tr><td>limit</td><td>integer</td><td>no</td><td>Max records per page. Default <code>20</code>.</td></tr>
+                <tr><td>cursor</td><td>string</td><td>no</td><td>Opaque pagination cursor.</td></tr>
+                <tr><td>status</td><td>string (enum)</td><td>no</td><td><code>active</code>, <code>inactive</code>, <code>invited</code>.</td></tr>
+                <tr><td>createdAfter</td><td>string (date-time)</td><td>no</td><td>ISO-8601 lower bound.</td></tr>
               </tbody>
             </table>
           </div>
@@ -88,40 +104,87 @@
             <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
           </div>
           <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request GET \
-  --url https://api.kairos.dev/v1/users?limit=20 \
-  --header 'Authorization: Bearer YOUR_API_KEY'</code></pre></div>
-          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/users?limit=20', {
-  headers: { Authorization: `Bearer ${process.env.KAIROS_API_KEY}` }
+  --url 'https://api.kairos.dev/v1/users?limit=20&status=active' \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'</code></pre></div>
+          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/users?limit=20&status=active', {
+  headers: { Authorization: `Bearer ${process.env.KAIROS_TOKEN}` }
 });
 const data = await res.json();</code></pre></div>
           <div class="code-pane" data-code-pane="java"><pre><code>HttpRequest request = HttpRequest.newBuilder()
-  .uri(URI.create("https://api.kairos.dev/v1/users?limit=20"))
-  .header("Authorization", "Bearer " + apiKey)
+  .uri(URI.create("https://api.kairos.dev/v1/users?limit=20&status=active"))
+  .header("Authorization", "Bearer " + token)
   .GET()
   .build();</code></pre></div>
-          <div class="code-pane" data-code-pane="python"><pre><code>import requests
-resp = requests.get(
-  "https://api.kairos.dev/v1/users",
-  params={"limit": 20},
-  headers={"Authorization": f"Bearer {api_key}"}
+          <div class="code-pane" data-code-pane="python"><pre><code>resp = requests.get(
+  'https://api.kairos.dev/v1/users',
+  params={'limit': 20, 'status': 'active'},
+  headers={'Authorization': f'Bearer {token}'}
 )</code></pre></div>
-          <div class="code-pane" data-code-pane="php"><pre><code>$client = new \GuzzleHttp\Client();
-$response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
-  'query' => ['limit' => 20],
-  'headers' => ['Authorization' => "Bearer {$apiKey}"]
+          <div class="code-pane" data-code-pane="php"><pre><code>$response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
+  'query' => ['limit' => 20, 'status' => 'active'],
+  'headers' => ['Authorization' => "Bearer {$token}"]
 ]);</code></pre></div>
         </div>
 
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Response Variants</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="schema">Schema</button>
+              <button type="button" class="code-tab" data-code-tab="example">Example</button>
+              <button type="button" class="code-tab" data-code-tab="headers">Headers</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="schema"><pre><code>{
+  "type": "object",
+  "properties": {
+    "data": { "type": "array", "items": { "$ref": "#/components/schemas/User" } },
+    "nextCursor": { "type": "string", "nullable": true }
+  }
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="example"><pre><code>{
+  "data": [
+    { "id": "usr_1", "email": "alex@example.com", "status": "active" }
+  ],
+  "nextCursor": "usr_2"
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="headers"><pre><code>X-RateLimit-Limit: 120
+X-RateLimit-Remaining: 119
+X-Request-Id: req_2bK7f
+Link: &lt;https://api.kairos.dev/v1/users?cursor=usr_2&gt;; rel="next"</code></pre></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="get-user">Get User (Deprecated)<a href="#get-user" class="hash-link" aria-label="Direct link to Get User" title="Direct link to Get User" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method get">GET</span><span>/v1/users/{userId}</span></div>
+        <p><strong>Deprecated:</strong> Use <code>/v2/users/{userId}</code>. Covers path params and deprecation messaging.</p>
+        <div class="card table-wrap">
+          <h3>Path parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>userId</td><td>string</td><td>yes</td><td>User identifier (<code>usr_*</code>).</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="api-operation__aside">
         <div class="example-panel">
           <div class="example-panel__header">
             <h3>Response Example</h3>
             <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
           </div>
           <pre><code>{
-  "data": [
-    { "id": "usr_1", "email": "alex@example.com", "status": "active" }
-  ],
-  "nextCursor": "usr_2"
+  "id": "usr_1",
+  "email": "alex@example.com",
+  "name": "Alex",
+  "status": "active"
 }</code></pre>
         </div>
       </aside>
@@ -133,21 +196,19 @@ $response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
     <div class="api-operation">
       <div class="api-operation__main">
         <div class="endpoint"><span class="method post">POST</span><span>/v1/users</span></div>
-        <p>Creates a user and returns the created resource.</p>
-        <div class="card">
-          <h3>Request body</h3>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>email</td><td>string</td><td>yes</td><td>User email address.</td></tr>
-                <tr><td>name</td><td>string</td><td>yes</td><td>Display name.</td></tr>
-                <tr><td>locale</td><td>string</td><td>no</td><td>Locale code (for example `en-US`).</td></tr>
-              </tbody>
-            </table>
-          </div>
+        <p>Creates a user. Covers JSON body params + multiple response statuses + shared error style.</p>
+
+        <div class="card table-wrap">
+          <h3>Body parameters (<code>application/json</code>)</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>email</td><td>string (email)</td><td>yes</td><td>Unique user email.</td></tr>
+              <tr><td>name</td><td>string</td><td>yes</td><td>Display name.</td></tr>
+              <tr><td>locale</td><td>string</td><td>no</td><td>Locale in BCP-47 format.</td></tr>
+              <tr><td>metadata</td><td>object</td><td>no</td><td>Freeform object up to 10 keys.</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -166,47 +227,150 @@ $response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
           </div>
           <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request POST \
   --url https://api.kairos.dev/v1/users \
-  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
-  --data '{"email":"new.user@example.com","name":"New User"}'</code></pre></div>
-          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/users', {
+  --data '{"email":"new.user@example.com","name":"New User","locale":"en-US"}'</code></pre></div>
+          <div class="code-pane" data-code-pane="nodejs"><pre><code>await fetch('https://api.kairos.dev/v1/users', {
   method: 'POST',
   headers: {
-    Authorization: `Bearer ${process.env.KAIROS_API_KEY}`,
+    Authorization: `Bearer ${process.env.KAIROS_TOKEN}`,
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({ email: 'new.user@example.com', name: 'New User' })
+  body: JSON.stringify({ email: 'new.user@example.com', name: 'New User', locale: 'en-US' })
 });</code></pre></div>
           <div class="code-pane" data-code-pane="java"><pre><code>String payload = "{\"email\":\"new.user@example.com\",\"name\":\"New User\"}";
 HttpRequest request = HttpRequest.newBuilder()
   .uri(URI.create("https://api.kairos.dev/v1/users"))
-  .header("Authorization", "Bearer " + apiKey)
+  .header("Authorization", "Bearer " + token)
   .header("Content-Type", "application/json")
   .POST(HttpRequest.BodyPublishers.ofString(payload))
   .build();</code></pre></div>
-          <div class="code-pane" data-code-pane="python"><pre><code>import requests
-resp = requests.post(
-  "https://api.kairos.dev/v1/users",
-  json={"email": "new.user@example.com", "name": "New User"},
-  headers={"Authorization": f"Bearer {api_key}"}
+          <div class="code-pane" data-code-pane="python"><pre><code>requests.post(
+  'https://api.kairos.dev/v1/users',
+  headers={'Authorization': f'Bearer {token}'},
+  json={'email': 'new.user@example.com', 'name': 'New User', 'locale': 'en-US'}
 )</code></pre></div>
-          <div class="code-pane" data-code-pane="php"><pre><code>$client = new \GuzzleHttp\Client();
-$response = $client->request('POST', 'https://api.kairos.dev/v1/users', [
-  'json' => ['email' => 'new.user@example.com', 'name' => 'New User'],
-  'headers' => ['Authorization' => "Bearer {$apiKey}"]
+          <div class="code-pane" data-code-pane="php"><pre><code>$client->request('POST', 'https://api.kairos.dev/v1/users', [
+  'headers' => ['Authorization' => "Bearer {$token}"],
+  'json' => ['email' => 'new.user@example.com', 'name' => 'New User', 'locale' => 'en-US']
 ]);</code></pre></div>
         </div>
 
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Response Variants</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="status201">201</button>
+              <button type="button" class="code-tab" data-code-tab="status422">422</button>
+              <button type="button" class="code-tab" data-code-tab="shared">Shared Error</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="status201"><pre><code>{
+  "id": "usr_9f3ac",
+  "email": "new.user@example.com",
+  "name": "New User",
+  "status": "active"
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="status422"><pre><code>{
+  "code": "validation_error",
+  "message": "email must be a valid email",
+  "fieldErrors": [{"field": "email", "message": "invalid format"}]
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="shared"><pre><code>ERR_EMAIL_ALREADY_USED
+The email address already belongs to another user.
+Variables: [email, workspaceId]</code></pre></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="upload-avatar">Upload Avatar<a href="#upload-avatar" class="hash-link" aria-label="Direct link to Upload Avatar" title="Direct link to Upload Avatar" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method post">POST</span><span>/v1/users/{userId}/avatar</span></div>
+        <p>Covers <code>multipart/form-data</code> requests and form parameters.</p>
+
+        <div class="card table-wrap">
+          <h3>Path parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody><tr><td>userId</td><td>string</td><td>yes</td><td>User id to update.</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="card table-wrap">
+          <h3>Form parameters (<code>multipart/form-data</code>)</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>file</td><td>file</td><td>yes</td><td>PNG or JPEG image up to 5 MB.</td></tr>
+              <tr><td>crop</td><td>string (enum)</td><td>no</td><td><code>center</code>, <code>face</code>, <code>fit</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Request Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>curl --request POST \
+  --url https://api.kairos.dev/v1/users/usr_1/avatar \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --form file=@./avatar.png \
+  --form crop=face</code></pre>
+        </div>
         <div class="example-panel">
           <div class="example-panel__header">
             <h3>Response Example</h3>
             <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
           </div>
+          <pre><code>{ "avatarUrl": "https://cdn.kairos.dev/users/usr_1/avatar.png" }</code></pre>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="rotate-api-key">Rotate API Key<a href="#rotate-api-key" class="hash-link" aria-label="Direct link to Rotate API Key" title="Direct link to Rotate API Key" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method put">PUT</span><span>/v1/workspaces/{workspaceId}/api-key</span></div>
+        <p>Covers header params, cookie params, and idempotency behavior.</p>
+
+        <div class="card table-wrap">
+          <h3>Header parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>Idempotency-Key</td><td>string</td><td>yes</td><td>Ensures retries produce the same result.</td></tr>
+              <tr><td>X-Client-Version</td><td>string</td><td>no</td><td>SDK version identifier.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card table-wrap">
+          <h3>Cookie parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>kairos_session</td><td>string</td><td>no</td><td>Optional management console session binding.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example (200)</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
           <pre><code>{
-  "id": "usr_9f3ac",
-  "email": "new.user@example.com",
-  "name": "New User",
-  "status": "active"
+  "apiKeyPreview": "kr_live_****************9a2",
+  "rotatedAt": "2026-03-06T10:31:21Z"
 }</code></pre>
         </div>
       </aside>
@@ -218,15 +382,15 @@ $response = $client->request('POST', 'https://api.kairos.dev/v1/users', [
     <div class="api-operation">
       <div class="api-operation__main">
         <div class="endpoint"><span class="method delete">DELETE</span><span>/v1/users/{userId}</span></div>
-        <p>Deletes the selected user.</p>
+        <p>Deletes the selected user. Covers no-content responses (<code>204</code>).</p>
       </div>
       <aside class="api-operation__aside">
         <div class="example-panel">
           <div class="example-panel__header">
-            <h3>Response Example</h3>
+            <h3>Response</h3>
             <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
           </div>
-          <pre><code>{ "deleted": true }</code></pre>
+          <pre><code>Status: 204 No Content</code></pre>
         </div>
       </aside>
     </div>
@@ -237,42 +401,10 @@ $response = $client->request('POST', 'https://api.kairos.dev/v1/users', [
     <div class="api-operation">
       <div class="api-operation__main">
         <div class="endpoint"><span class="method get">GET</span><span>/v1/billing/plans</span></div>
-        <p>Returns available billing plans and pricing details.</p>
+        <p>Returns all billing plans. Covers array responses and enum fields.</p>
       </div>
 
       <aside class="api-operation__aside">
-        <div class="example-panel" data-code-tabs>
-          <div class="example-panel__header">
-            <h3>Request Example</h3>
-            <div class="code-tabs" role="tablist">
-              <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
-              <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
-              <button type="button" class="code-tab" data-code-tab="java">Java</button>
-              <button type="button" class="code-tab" data-code-tab="python">Python</button>
-              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
-            </div>
-            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
-          </div>
-          <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request GET \
-  --url https://api.kairos.dev/v1/billing/plans \
-  --header 'Authorization: Bearer YOUR_API_KEY'</code></pre></div>
-          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/billing/plans', {
-  headers: { Authorization: `Bearer ${process.env.KAIROS_API_KEY}` }
-});</code></pre></div>
-          <div class="code-pane" data-code-pane="java"><pre><code>HttpRequest request = HttpRequest.newBuilder()
-  .uri(URI.create("https://api.kairos.dev/v1/billing/plans"))
-  .header("Authorization", "Bearer " + apiKey)
-  .GET()
-  .build();</code></pre></div>
-          <div class="code-pane" data-code-pane="python"><pre><code>resp = requests.get(
-  "https://api.kairos.dev/v1/billing/plans",
-  headers={"Authorization": f"Bearer {api_key}"}
-)</code></pre></div>
-          <div class="code-pane" data-code-pane="php"><pre><code>$response = $client->request('GET', 'https://api.kairos.dev/v1/billing/plans', [
-  'headers' => ['Authorization' => "Bearer {$apiKey}"]
-]);</code></pre></div>
-        </div>
-
         <div class="example-panel">
           <div class="example-panel__header">
             <h3>Response Example</h3>
@@ -280,8 +412,9 @@ $response = $client->request('POST', 'https://api.kairos.dev/v1/users', [
           </div>
           <pre><code>{
   "data": [
-    { "id": "starter", "name": "Starter", "priceMonthly": 19 },
-    { "id": "growth", "name": "Growth", "priceMonthly": 99 }
+    { "id": "starter", "interval": "month", "price": 19, "currency": "USD" },
+    { "id": "growth", "interval": "month", "price": 99, "currency": "USD" },
+    { "id": "enterprise", "interval": "year", "price": 4990, "currency": "USD" }
   ]
 }</code></pre>
         </div>
@@ -294,15 +427,28 @@ $response = $client->request('POST', 'https://api.kairos.dev/v1/users', [
     <div class="api-operation">
       <div class="api-operation__main">
         <div class="endpoint"><span class="method post">POST</span><span>/v1/billing/subscriptions</span></div>
-        <p>Creates a subscription for a customer.</p>
+        <p>Covers oneOf-style outputs (active subscription vs pending verification).</p>
       </div>
       <aside class="api-operation__aside">
-        <div class="example-panel">
+        <div class="example-panel" data-code-tabs>
           <div class="example-panel__header">
-            <h3>Response Example</h3>
+            <h3>Response Variants</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="active">active</button>
+              <button type="button" class="code-tab" data-code-tab="pending">pending</button>
+            </div>
             <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
           </div>
-          <pre><code>{ "id": "sub_001", "status": "active" }</code></pre>
+          <div class="code-pane is-active" data-code-pane="active"><pre><code>{
+  "id": "sub_001",
+  "status": "active",
+  "currentPeriodEnd": "2026-04-01T00:00:00Z"
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="pending"><pre><code>{
+  "id": "sub_002",
+  "status": "pending_verification",
+  "verificationUrl": "https://pay.example/verify/abc123"
+}</code></pre></div>
         </div>
       </aside>
     </div>
