@@ -14,8 +14,13 @@
       document.querySelectorAll('.menu__list-item-collapsible .menu__link--sublist, .menu__list-item-collapsible .menu__caret')
     );
     const tabGroups = Array.from(document.querySelectorAll('[data-code-tabs]'));
+    const languageTabGroups = tabGroups.filter(function (group) {
+      return group.getAttribute('data-code-sync') === 'language';
+    });
     const copyButtons = Array.from(document.querySelectorAll('[data-copy-example]'));
     const markdownLinkDescriptions = Array.from(document.querySelectorAll('[data-render-md-links]'));
+    const languageStorageKey = 'kairos.docs.language';
+    const defaultLanguage = 'curl';
 
     let activeHash = null;
     let scrollTicking = false;
@@ -86,6 +91,52 @@
 
       panes.forEach(function (pane) {
         pane.classList.toggle('is-active', pane.getAttribute('data-code-pane') === tabId);
+      });
+    }
+
+    function getPreferredLanguage() {
+      try {
+        const value = window.localStorage.getItem(languageStorageKey);
+        return value || defaultLanguage;
+      } catch (error) {
+        return defaultLanguage;
+      }
+    }
+
+    function setPreferredLanguage(value) {
+      try {
+        window.localStorage.setItem(languageStorageKey, value);
+      } catch (error) {
+        // ignore storage failures
+      }
+    }
+
+    function getAvailableTabs(group) {
+      return Array.from(group.querySelectorAll('[data-code-tab]')).map(function (tab) {
+        return tab.getAttribute('data-code-tab');
+      });
+    }
+
+    function resolveGroupLanguage(group, preferredLanguage) {
+      const availableTabs = getAvailableTabs(group);
+      if (!availableTabs.length) {
+        return null;
+      }
+      if (availableTabs.indexOf(preferredLanguage) !== -1) {
+        return preferredLanguage;
+      }
+      if (availableTabs.indexOf(defaultLanguage) !== -1) {
+        return defaultLanguage;
+      }
+      return availableTabs[0];
+    }
+
+    function applyLanguageToAllGroups(language) {
+      languageTabGroups.forEach(function (group) {
+        const resolved = resolveGroupLanguage(group, language);
+        if (resolved) {
+          setCodeTab(group, resolved);
+        }
       });
     }
 
@@ -211,17 +262,26 @@
     });
 
     tabGroups.forEach(function (group) {
+      const isLanguageGroup = group.getAttribute('data-code-sync') === 'language';
       const firstTab = group.querySelector('[data-code-tab]');
-      if (firstTab) {
+      if (!isLanguageGroup && firstTab) {
         setCodeTab(group, firstTab.getAttribute('data-code-tab'));
       }
 
       group.querySelectorAll('[data-code-tab]').forEach(function (tab) {
         tab.addEventListener('click', function () {
-          setCodeTab(group, tab.getAttribute('data-code-tab'));
+          const selectedTab = tab.getAttribute('data-code-tab');
+          if (isLanguageGroup) {
+            setPreferredLanguage(selectedTab);
+            applyLanguageToAllGroups(selectedTab);
+            return;
+          }
+          setCodeTab(group, selectedTab);
         });
       });
     });
+
+    applyLanguageToAllGroups(getPreferredLanguage());
 
     copyButtons.forEach(function (button) {
       button.addEventListener('click', function () {

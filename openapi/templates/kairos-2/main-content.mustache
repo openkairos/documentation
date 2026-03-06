@@ -150,15 +150,15 @@
       </div>
 
       <aside class="api-operation__aside">
-        <div class="example-panel" data-code-tabs>
+        <div class="example-panel" data-code-tabs data-code-sync="language">
           <div class="example-panel__header">
             <h3>Request Example</h3>
             <div class="code-tabs" role="tablist">
               <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
               <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
+              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
               <button type="button" class="code-tab" data-code-tab="java">Java</button>
               <button type="button" class="code-tab" data-code-tab="python">Python</button>
-              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
             </div>
             <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
           </div>
@@ -169,6 +169,10 @@
   headers: { Authorization: `Bearer ${process.env.KAIROS_TOKEN}` }
 });
 const data = await res.json();</code></pre></div>
+          <div class="code-pane" data-code-pane="php"><pre><code>$response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
+  'query' => ['limit' => 20, 'status' => 'active'],
+  'headers' => ['Authorization' => "Bearer {$token}"]
+]);</code></pre></div>
           <div class="code-pane" data-code-pane="java"><pre><code>HttpRequest request = HttpRequest.newBuilder()
   .uri(URI.create("https://api.kairos.dev/v1/users?limit=20&status=active"))
   .header("Authorization", "Bearer " + token)
@@ -179,10 +183,6 @@ const data = await res.json();</code></pre></div>
   params={'limit': 20, 'status': 'active'},
   headers={'Authorization': f'Bearer {token}'}
 )</code></pre></div>
-          <div class="code-pane" data-code-pane="php"><pre><code>$response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
-  'query' => ['limit' => 20, 'status' => 'active'],
-  'headers' => ['Authorization' => "Bearer {$token}"]
-]);</code></pre></div>
         </div>
 
         <div class="example-panel" data-code-tabs>
@@ -272,15 +272,15 @@ Link: &lt;https://api.kairos.dev/v1/users?cursor=usr_2&gt;; rel="next"</code></p
       </div>
 
       <aside class="api-operation__aside">
-        <div class="example-panel" data-code-tabs>
+        <div class="example-panel" data-code-tabs data-code-sync="language">
           <div class="example-panel__header">
             <h3>Request Example</h3>
             <div class="code-tabs" role="tablist">
               <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
               <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
+              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
               <button type="button" class="code-tab" data-code-tab="java">Java</button>
               <button type="button" class="code-tab" data-code-tab="python">Python</button>
-              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
             </div>
             <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
           </div>
@@ -297,6 +297,10 @@ Link: &lt;https://api.kairos.dev/v1/users?cursor=usr_2&gt;; rel="next"</code></p
   },
   body: JSON.stringify({ email: 'new.user@example.com', name: 'New User', locale: 'en-US' })
 });</code></pre></div>
+          <div class="code-pane" data-code-pane="php"><pre><code>$client->request('POST', 'https://api.kairos.dev/v1/users', [
+  'headers' => ['Authorization' => "Bearer {$token}"],
+  'json' => ['email' => 'new.user@example.com', 'name' => 'New User', 'locale' => 'en-US']
+]);</code></pre></div>
           <div class="code-pane" data-code-pane="java"><pre><code>String payload = "{\"email\":\"new.user@example.com\",\"name\":\"New User\"}";
 HttpRequest request = HttpRequest.newBuilder()
   .uri(URI.create("https://api.kairos.dev/v1/users"))
@@ -309,10 +313,6 @@ HttpRequest request = HttpRequest.newBuilder()
   headers={'Authorization': f'Bearer {token}'},
   json={'email': 'new.user@example.com', 'name': 'New User', 'locale': 'en-US'}
 )</code></pre></div>
-          <div class="code-pane" data-code-pane="php"><pre><code>$client->request('POST', 'https://api.kairos.dev/v1/users', [
-  'headers' => ['Authorization' => "Bearer {$token}"],
-  'json' => ['email' => 'new.user@example.com', 'name' => 'New User', 'locale' => 'en-US']
-]);</code></pre></div>
         </div>
 
         <div class="example-panel" data-code-tabs>
