@@ -1,10 +1,21 @@
 openapi: 3.0.3
 info:
-  title: Kairos API
+  title: Open Kairos API
+  description: Kairos provides REST APIs that are used by the UI components and can be called directly to configure and access Kairos features.
   version: 1.0.0
-  description: Kairos API Specifications.
+  license:
+    name: GPL-3.0 license
+    url: https://github.com/openkairos/kairos?tab=GPL-3.0-1-ov-file#readme
 servers:
   - url: https://api.kairos.example
+security:
+  - bearerAuth:
+      - users:read
+      - users:write
+      - billing:read
+      - billing:write
+  - basicAuth: [ ]
+  - http_api_key: [ ]
 paths:
   /:
     get:
@@ -18,3 +29,29 @@ paths:
               schema:
                 type: string
                 example: "Kairos: The right moment for customer data."
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        Kairos supports HTTP Bearer authentication using the Authorization header.
+        Send `Authorization: Bearer YOUR_TOKEN` with your requests.
+    basicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        Kairos supports HTTP Basic authentication using the Authorization header.
+        Basic auth tokens are constructed with the Basic keyword, followed by a
+        space, followed by a base64-encoded string of your username:password.
+        Example: send `Authorization: Basic aGVsbG86aGVsbG8=` with your requests.
+    http_api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |-
+        Kairos supports API key authentication using the `Authorization` header.
+        Send `Authorization: ApiKey YOUR_API_KEY` with your requests.
+        To generate an API key, refer to the [API keys guide](https://kairos.dev/docs/authentication/api-keys).

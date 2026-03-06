@@ -1,0 +1,515 @@
+<main class="content">
+  <p class="eyebrow">API Reference</p>
+  <h1>{{{appName}}}</h1>
+  <p class="lead">
+    {{{appDescription}}}
+  </p>
+
+  <div class="doc-meta">
+    {{#version}}
+    <span class="doc-meta__item">
+      <span class="doc-meta__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" focusable="false">
+          <path fill="currentColor" d="M5 5h14v2H5zm0 6h8v2H5zm0 6h14v2H5z"></path>
+        </svg>
+      </span>
+      <span><strong>Version:</strong> {{{.}}}</span>
+    </span>
+    {{/version}}
+    {{#licenseInfo}}
+    <span class="doc-meta__item">
+      <span class="doc-meta__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" focusable="false">
+          <path fill="currentColor" d="M12 2l8 4v6c0 5-3.4 9.5-8 10-4.6-.5-8-5-8-10V6zm0 2.2L6 7v5c0 3.8 2.4 7.4 6 8.4 3.6-1 6-4.6 6-8.4V7z"></path>
+        </svg>
+      </span>
+      <span>
+        <strong>License:</strong>
+        {{#licenseUrl}}<a href="{{{.}}}" class="doc-meta__link" target="_blank" rel="noopener noreferrer">{{{licenseInfo}}}</a>{{/licenseUrl}}
+        {{^licenseUrl}}{{{licenseInfo}}}{{/licenseUrl}}
+      </span>
+    </span>
+    {{/licenseInfo}}
+  </div>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="authentication">Authentication<a href="#authentication" class="hash-link" aria-label="Direct link to Authentication" title="Direct link to Authentication" translate="no">​</a></h2>
+    <div class="auth-list">
+      {{#apiInfo}}
+      {{#apis}}
+      {{#operations}}
+      {{#operation}}
+      {{#-first}}
+      {{#authMethods}}
+      {{#isBasicBearer}}
+      <details class="auth-item">
+        <summary class="auth-item__summary">
+          <span class="auth-item__title">Bearer Authentication</span>
+          <span class="auth-item__meta">Authorization header</span>
+        </summary>
+        <div class="auth-item__body">
+          {{#description}}<div class="auth-item__description" data-render-md-links>{{{description}}}</div>{{/description}}
+          {{#scopes}}
+          {{#-first}}<div class="auth-item__scopes"><h4>Scopes</h4><ul>{{/-first}}
+            <li><code>{{scope}}</code></li>
+          {{#-last}}</ul></div>{{/-last}}
+          {{/scopes}}
+          {{>auth-usage-panel}}
+        </div>
+      </details>
+      {{/isBasicBearer}}
+      {{#isBasicBasic}}
+      <details class="auth-item">
+        <summary class="auth-item__summary">
+          <span class="auth-item__title">Basic Authentication</span>
+          <span class="auth-item__meta">Authorization header</span>
+        </summary>
+        <div class="auth-item__body">
+          {{#description}}<div class="auth-item__description" data-render-md-links>{{{description}}}</div>{{/description}}
+          {{#scopes}}
+          {{#-first}}<div class="auth-item__scopes"><h4>Scopes</h4><ul>{{/-first}}
+            <li><code>{{scope}}</code></li>
+          {{#-last}}</ul></div>{{/-last}}
+          {{/scopes}}
+          {{>auth-usage-panel}}
+        </div>
+      </details>
+      {{/isBasicBasic}}
+      {{#isApiKey}}
+      <details class="auth-item">
+        <summary class="auth-item__summary">
+          <span class="auth-item__title">API Key Authentication</span>
+          <span class="auth-item__meta">{{keyParamName}} header</span>
+        </summary>
+        <div class="auth-item__body">
+          {{#description}}<div class="auth-item__description" data-render-md-links>{{{description}}}</div>{{/description}}
+          {{#scopes}}
+          {{#-first}}<div class="auth-item__scopes"><h4>Scopes</h4><ul>{{/-first}}
+            <li><code>{{scope}}</code></li>
+          {{#-last}}</ul></div>{{/-last}}
+          {{/scopes}}
+          {{>auth-usage-panel}}
+        </div>
+      </details>
+      {{/isApiKey}}
+      {{/authMethods}}
+      {{/-first}}
+      {{/operation}}
+      {{/operations}}
+      {{/apis}}
+      {{/apiInfo}}
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="errors">Error Handling<a href="#errors" class="hash-link" aria-label="Direct link to Error Handling" title="Direct link to Error Handling" translate="no">​</a></h2>
+    <div class="card table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Code</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>400</td><td><code>bad_request</code></td><td>Payload is invalid or missing required fields.</td></tr>
+          <tr><td>401</td><td><code>unauthorized</code></td><td>Missing or invalid bearer token.</td></tr>
+          <tr><td>403</td><td><code>forbidden</code></td><td>Token lacks required scope.</td></tr>
+          <tr><td>404</td><td><code>not_found</code></td><td>Resource does not exist.</td></tr>
+          <tr><td>409</td><td><code>conflict</code></td><td>Resource state conflict.</td></tr>
+          <tr><td>422</td><td><code>validation_error</code></td><td>Semantic validation failed.</td></tr>
+          <tr><td>429</td><td><code>rate_limited</code></td><td>Rate limit exceeded.</td></tr>
+          <tr><td>500</td><td><code>internal_error</code></td><td>Unexpected server failure.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="list-users">List Users<a href="#list-users" class="hash-link" aria-label="Direct link to List Users" title="Direct link to List Users" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method get">GET</span><span>/v1/users</span></div>
+        <p>Returns a paginated users collection. Covers query params + header response metadata.</p>
+
+        <div class="card">
+          <h3>Query parameters</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>limit</td><td>integer</td><td>no</td><td>Max records per page. Default <code>20</code>.</td></tr>
+                <tr><td>cursor</td><td>string</td><td>no</td><td>Opaque pagination cursor.</td></tr>
+                <tr><td>status</td><td>string (enum)</td><td>no</td><td><code>active</code>, <code>inactive</code>, <code>invited</code>.</td></tr>
+                <tr><td>createdAfter</td><td>string (date-time)</td><td>no</td><td>ISO-8601 lower bound.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <aside class="api-operation__aside">
+        <div class="example-panel" data-code-tabs data-code-sync="language">
+          <div class="example-panel__header">
+            <h3>Request Example</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
+              <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
+              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
+              <button type="button" class="code-tab" data-code-tab="java">Java</button>
+              <button type="button" class="code-tab" data-code-tab="python">Python</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request GET \
+  --url 'https://api.kairos.dev/v1/users?limit=20&status=active' \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'</code></pre></div>
+          <div class="code-pane" data-code-pane="nodejs"><pre><code>const res = await fetch('https://api.kairos.dev/v1/users?limit=20&status=active', {
+  headers: { Authorization: `Bearer ${process.env.KAIROS_TOKEN}` }
+});
+const data = await res.json();</code></pre></div>
+          <div class="code-pane" data-code-pane="php"><pre><code>$response = $client->request('GET', 'https://api.kairos.dev/v1/users', [
+  'query' => ['limit' => 20, 'status' => 'active'],
+  'headers' => ['Authorization' => "Bearer {$token}"]
+]);</code></pre></div>
+          <div class="code-pane" data-code-pane="java"><pre><code>HttpRequest request = HttpRequest.newBuilder()
+  .uri(URI.create("https://api.kairos.dev/v1/users?limit=20&status=active"))
+  .header("Authorization", "Bearer " + token)
+  .GET()
+  .build();</code></pre></div>
+          <div class="code-pane" data-code-pane="python"><pre><code>resp = requests.get(
+  'https://api.kairos.dev/v1/users',
+  params={'limit': 20, 'status': 'active'},
+  headers={'Authorization': f'Bearer {token}'}
+)</code></pre></div>
+        </div>
+
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Response Variants</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="schema">Schema</button>
+              <button type="button" class="code-tab" data-code-tab="example">Example</button>
+              <button type="button" class="code-tab" data-code-tab="headers">Headers</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="schema"><pre><code>{
+  "type": "object",
+  "properties": {
+    "data": { "type": "array", "items": { "$ref": "#/components/schemas/User" } },
+    "nextCursor": { "type": "string", "nullable": true }
+  }
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="example"><pre><code>{
+  "data": [
+    { "id": "usr_1", "email": "alex@example.com", "status": "active" }
+  ],
+  "nextCursor": "usr_2"
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="headers"><pre><code>X-RateLimit-Limit: 120
+X-RateLimit-Remaining: 119
+X-Request-Id: req_2bK7f
+Link: &lt;https://api.kairos.dev/v1/users?cursor=usr_2&gt;; rel="next"</code></pre></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="get-user">Get User (Deprecated)<a href="#get-user" class="hash-link" aria-label="Direct link to Get User" title="Direct link to Get User" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method get">GET</span><span>/v1/users/{userId}</span></div>
+        <p><strong>Deprecated:</strong> Use <code>/v2/users/{userId}</code>. Covers path params and deprecation messaging.</p>
+        <div class="card table-wrap">
+          <h3>Path parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>userId</td><td>string</td><td>yes</td><td>User identifier (<code>usr_*</code>).</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{
+  "id": "usr_1",
+  "email": "alex@example.com",
+  "name": "Alex",
+  "status": "active"
+}</code></pre>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="create-user">Create User<a href="#create-user" class="hash-link" aria-label="Direct link to Create User" title="Direct link to Create User" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method post">POST</span><span>/v1/users</span></div>
+        <p>Creates a user. Covers JSON body params + multiple response statuses + shared error style.</p>
+
+        <div class="card table-wrap">
+          <h3>Body parameters (<code>application/json</code>)</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>email</td><td>string (email)</td><td>yes</td><td>Unique user email.</td></tr>
+              <tr><td>name</td><td>string</td><td>yes</td><td>Display name.</td></tr>
+              <tr><td>locale</td><td>string</td><td>no</td><td>Locale in BCP-47 format.</td></tr>
+              <tr><td>metadata</td><td>object</td><td>no</td><td>Freeform object up to 10 keys.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside class="api-operation__aside">
+        <div class="example-panel" data-code-tabs data-code-sync="language">
+          <div class="example-panel__header">
+            <h3>Request Example</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="curl">curl</button>
+              <button type="button" class="code-tab" data-code-tab="nodejs">NodeJs</button>
+              <button type="button" class="code-tab" data-code-tab="php">PHP</button>
+              <button type="button" class="code-tab" data-code-tab="java">Java</button>
+              <button type="button" class="code-tab" data-code-tab="python">Python</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="curl"><pre><code>curl --request POST \
+  --url https://api.kairos.dev/v1/users \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{"email":"new.user@example.com","name":"New User","locale":"en-US"}'</code></pre></div>
+          <div class="code-pane" data-code-pane="nodejs"><pre><code>await fetch('https://api.kairos.dev/v1/users', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.KAIROS_TOKEN}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ email: 'new.user@example.com', name: 'New User', locale: 'en-US' })
+});</code></pre></div>
+          <div class="code-pane" data-code-pane="php"><pre><code>$client->request('POST', 'https://api.kairos.dev/v1/users', [
+  'headers' => ['Authorization' => "Bearer {$token}"],
+  'json' => ['email' => 'new.user@example.com', 'name' => 'New User', 'locale' => 'en-US']
+]);</code></pre></div>
+          <div class="code-pane" data-code-pane="java"><pre><code>String payload = "{\"email\":\"new.user@example.com\",\"name\":\"New User\"}";
+HttpRequest request = HttpRequest.newBuilder()
+  .uri(URI.create("https://api.kairos.dev/v1/users"))
+  .header("Authorization", "Bearer " + token)
+  .header("Content-Type", "application/json")
+  .POST(HttpRequest.BodyPublishers.ofString(payload))
+  .build();</code></pre></div>
+          <div class="code-pane" data-code-pane="python"><pre><code>requests.post(
+  'https://api.kairos.dev/v1/users',
+  headers={'Authorization': f'Bearer {token}'},
+  json={'email': 'new.user@example.com', 'name': 'New User', 'locale': 'en-US'}
+)</code></pre></div>
+        </div>
+
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Response Variants</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="status201">201</button>
+              <button type="button" class="code-tab" data-code-tab="status422">422</button>
+              <button type="button" class="code-tab" data-code-tab="shared">Shared Error</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="status201"><pre><code>{
+  "id": "usr_9f3ac",
+  "email": "new.user@example.com",
+  "name": "New User",
+  "status": "active"
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="status422"><pre><code>{
+  "code": "validation_error",
+  "message": "email must be a valid email",
+  "fieldErrors": [{"field": "email", "message": "invalid format"}]
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="shared"><pre><code>ERR_EMAIL_ALREADY_USED
+The email address already belongs to another user.
+Variables: [email, workspaceId]</code></pre></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="upload-avatar">Upload Avatar<a href="#upload-avatar" class="hash-link" aria-label="Direct link to Upload Avatar" title="Direct link to Upload Avatar" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method post">POST</span><span>/v1/users/{userId}/avatar</span></div>
+        <p>Covers <code>multipart/form-data</code> requests and form parameters.</p>
+
+        <div class="card table-wrap">
+          <h3>Path parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody><tr><td>userId</td><td>string</td><td>yes</td><td>User id to update.</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="card table-wrap">
+          <h3>Form parameters (<code>multipart/form-data</code>)</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>file</td><td>file</td><td>yes</td><td>PNG or JPEG image up to 5 MB.</td></tr>
+              <tr><td>crop</td><td>string (enum)</td><td>no</td><td><code>center</code>, <code>face</code>, <code>fit</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Request Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>curl --request POST \
+  --url https://api.kairos.dev/v1/users/usr_1/avatar \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --form file=@./avatar.png \
+  --form crop=face</code></pre>
+        </div>
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{ "avatarUrl": "https://cdn.kairos.dev/users/usr_1/avatar.png" }</code></pre>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="rotate-api-key">Rotate API Key<a href="#rotate-api-key" class="hash-link" aria-label="Direct link to Rotate API Key" title="Direct link to Rotate API Key" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method put">PUT</span><span>/v1/workspaces/{workspaceId}/api-key</span></div>
+        <p>Covers header params, cookie params, and idempotency behavior.</p>
+
+        <div class="card table-wrap">
+          <h3>Header parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>Idempotency-Key</td><td>string</td><td>yes</td><td>Ensures retries produce the same result.</td></tr>
+              <tr><td>X-Client-Version</td><td>string</td><td>no</td><td>SDK version identifier.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card table-wrap">
+          <h3>Cookie parameters</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>kairos_session</td><td>string</td><td>no</td><td>Optional management console session binding.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example (200)</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{
+  "apiKeyPreview": "kr_live_****************9a2",
+  "rotatedAt": "2026-03-06T10:31:21Z"
+}</code></pre>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="delete-user">Delete User<a href="#delete-user" class="hash-link" aria-label="Direct link to Delete User" title="Direct link to Delete User" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method delete">DELETE</span><span>/v1/users/{userId}</span></div>
+        <p>Deletes the selected user. Covers no-content responses (<code>204</code>).</p>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>Status: 204 No Content</code></pre>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="list-plans">List Plans<a href="#list-plans" class="hash-link" aria-label="Direct link to List Plans" title="Direct link to List Plans" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method get">GET</span><span>/v1/billing/plans</span></div>
+        <p>Returns all billing plans. Covers array responses and enum fields.</p>
+      </div>
+
+      <aside class="api-operation__aside">
+        <div class="example-panel">
+          <div class="example-panel__header">
+            <h3>Response Example</h3>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <pre><code>{
+  "data": [
+    { "id": "starter", "interval": "month", "price": 19, "currency": "USD" },
+    { "id": "growth", "interval": "month", "price": 99, "currency": "USD" },
+    { "id": "enterprise", "interval": "year", "price": 4990, "currency": "USD" }
+  ]
+}</code></pre>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="create-subscription">Create Subscription<a href="#create-subscription" class="hash-link" aria-label="Direct link to Create Subscription" title="Direct link to Create Subscription" translate="no">​</a></h2>
+    <div class="api-operation">
+      <div class="api-operation__main">
+        <div class="endpoint"><span class="method post">POST</span><span>/v1/billing/subscriptions</span></div>
+        <p>Covers oneOf-style outputs (active subscription vs pending verification).</p>
+      </div>
+      <aside class="api-operation__aside">
+        <div class="example-panel" data-code-tabs>
+          <div class="example-panel__header">
+            <h3>Response Variants</h3>
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab is-active" data-code-tab="active">active</button>
+              <button type="button" class="code-tab" data-code-tab="pending">pending</button>
+            </div>
+            <button type="button" class="copy-example-btn" data-copy-example>Copy</button>
+          </div>
+          <div class="code-pane is-active" data-code-pane="active"><pre><code>{
+  "id": "sub_001",
+  "status": "active",
+  "currentPeriodEnd": "2026-04-01T00:00:00Z"
+}</code></pre></div>
+          <div class="code-pane" data-code-pane="pending"><pre><code>{
+  "id": "sub_002",
+  "status": "pending_verification",
+  "verificationUrl": "https://pay.example/verify/abc123"
+}</code></pre></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
