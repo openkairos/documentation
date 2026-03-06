@@ -34,23 +34,70 @@
 
   <section>
     <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="authentication">Authentication<a href="#authentication" class="hash-link" aria-label="Direct link to Authentication" title="Direct link to Authentication" translate="no">​</a></h2>
-    <div class="card">
-      <p>All protected endpoints require OAuth 2.0 bearer tokens.</p>
-      <pre><code>Authorization: Bearer YOUR_ACCESS_TOKEN</code></pre>
-    </div>
-    <div class="card table-wrap">
-      <h3>Scopes</h3>
-      <table>
-        <thead>
-          <tr><th>Scope</th><th>Description</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>users:read</code></td><td>Read users and profile data.</td></tr>
-          <tr><td><code>users:write</code></td><td>Create and update users.</td></tr>
-          <tr><td><code>billing:read</code></td><td>Read plans, invoices, and usage.</td></tr>
-          <tr><td><code>billing:write</code></td><td>Create and manage subscriptions.</td></tr>
-        </tbody>
-      </table>
+    <div class="auth-list">
+      {{#apiInfo}}
+      {{#apis}}
+      {{#operations}}
+      {{#operation}}
+      {{#-first}}
+      {{#authMethods}}
+      {{#isBasicBearer}}
+      <details class="auth-item">
+        <summary class="auth-item__summary">
+          <span class="auth-item__title">Bearer Authentication</span>
+          <span class="auth-item__meta">Authorization header</span>
+        </summary>
+        <div class="auth-item__body">
+          {{#description}}<div class="auth-item__description" data-render-md-links>{{{description}}}</div>{{/description}}
+          {{#scopes}}
+          {{#-first}}<div class="auth-item__scopes"><h4>Scopes</h4><ul>{{/-first}}
+            <li><code>{{scope}}</code></li>
+          {{#-last}}</ul></div>{{/-last}}
+          {{/scopes}}
+          {{>auth-usage-panel}}
+        </div>
+      </details>
+      {{/isBasicBearer}}
+      {{#isBasicBasic}}
+      <details class="auth-item">
+        <summary class="auth-item__summary">
+          <span class="auth-item__title">Basic Authentication</span>
+          <span class="auth-item__meta">Authorization header</span>
+        </summary>
+        <div class="auth-item__body">
+          {{#description}}<div class="auth-item__description" data-render-md-links>{{{description}}}</div>{{/description}}
+          {{#scopes}}
+          {{#-first}}<div class="auth-item__scopes"><h4>Scopes</h4><ul>{{/-first}}
+            <li><code>{{scope}}</code></li>
+          {{#-last}}</ul></div>{{/-last}}
+          {{/scopes}}
+          {{>auth-usage-panel}}
+        </div>
+      </details>
+      {{/isBasicBasic}}
+      {{#isApiKey}}
+      <details class="auth-item">
+        <summary class="auth-item__summary">
+          <span class="auth-item__title">API Key Authentication</span>
+          <span class="auth-item__meta">{{keyParamName}} header</span>
+        </summary>
+        <div class="auth-item__body">
+          {{#description}}<div class="auth-item__description" data-render-md-links>{{{description}}}</div>{{/description}}
+          {{#scopes}}
+          {{#-first}}<div class="auth-item__scopes"><h4>Scopes</h4><ul>{{/-first}}
+            <li><code>{{scope}}</code></li>
+          {{#-last}}</ul></div>{{/-last}}
+          {{/scopes}}
+          {{>auth-usage-panel}}
+        </div>
+      </details>
+      {{/isApiKey}}
+      {{/authMethods}}
+      {{/-first}}
+      {{/operation}}
+      {{/operations}}
+      {{/apis}}
+      {{/apiInfo}}
     </div>
   </section>
 

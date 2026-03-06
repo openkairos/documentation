@@ -15,6 +15,7 @@
     );
     const tabGroups = Array.from(document.querySelectorAll('[data-code-tabs]'));
     const copyButtons = Array.from(document.querySelectorAll('[data-copy-example]'));
+    const markdownLinkDescriptions = Array.from(document.querySelectorAll('[data-render-md-links]'));
 
     let activeHash = null;
     let scrollTicking = false;
@@ -135,6 +136,49 @@
       });
     }
 
+    function renderMarkdownLinks() {
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      markdownLinkDescriptions.forEach(function (element) {
+        const source = element.innerHTML;
+        if (!source) {
+          return;
+        }
+
+        const codeBlocks = [];
+        const withCodeBlocks = source.replace(/```([a-zA-Z0-9_-]+)?\n?([\s\S]*?)```/g, function (_, language, code) {
+          const blockClass = language ? ' class="language-' + escapeHtml(language) + '"' : '';
+          const html = '<pre><code' + blockClass + '>' + escapeHtml(code.trim()) + '</code></pre>';
+          const token = '__CODE_BLOCK_' + codeBlocks.length + '__';
+          codeBlocks.push(html);
+          return token;
+        });
+
+        const withLinks = withCodeBlocks.replace(
+          /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+          '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+        );
+
+        const withInlineCode = withLinks.replace(/`([^`\n]+)`/g, function (_, inlineCode) {
+          return '<code>' + escapeHtml(inlineCode) + '</code>';
+        });
+
+        const rendered = withInlineCode.replace(/__CODE_BLOCK_(\d+)__/g, function (_, index) {
+          const block = codeBlocks[Number(index)];
+          return block || '';
+        });
+
+        element.innerHTML = rendered;
+      });
+    }
+
     menuToggle.addEventListener('click', function () {
       const isOpen = sidebar.classList.contains('open');
       if (isOpen) {
@@ -201,6 +245,8 @@
         });
       });
     });
+
+    renderMarkdownLinks();
 
     window.addEventListener('hashchange', function () {
       setActiveLinkByHash(window.location.hash, {force: true});
